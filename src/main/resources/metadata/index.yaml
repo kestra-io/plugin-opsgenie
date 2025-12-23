@@ -1,6 +1,6 @@
 group: io.kestra.plugin.opsgenie
 name: "opsgenie"
-title: "Opsgenie"
+title: "Atlassian Opsgenie"
 description: "Tasks that create alerts in Opsgenie."
 body: "Provide the Opsgenie API endpoint and integration key, along with message, priority, responders, and tags to open alerts from Kestra flows and receive response payloads."
 videos: []
