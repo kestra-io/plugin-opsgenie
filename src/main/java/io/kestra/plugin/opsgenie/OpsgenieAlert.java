@@ -98,9 +98,10 @@ import java.net.URI;
                     authorizationToken: sampleAuthorizationToken
                 """
         ),
-    }
+    },
+    aliases = "io.kestra.plugin.notifications.opsgenie.OpsgenieAlert"
 )
-public class OpsgenieAlert extends AbstractHttpOptionsTask {
+public class OpsgenieAlert extends AbstractOpsgenieConnection {
 
     @Schema(
         title = "Alert creation URL"
