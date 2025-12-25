@@ -35,7 +35,7 @@ public class OpsgenieAlertTest {
             "message", "A message *with some bold text* and _some italicized text_.",
             "alias", "Execution alert",
             "description", "Opsgenie test alert notification"
-                                                           ));
+        ));
 
         EmbeddedServer embeddedServer = applicationContext.getBean(EmbeddedServer.class);
         embeddedServer.start();
