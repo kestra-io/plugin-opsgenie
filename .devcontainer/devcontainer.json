@@ -1,10 +1,10 @@
 {
-  "name": "plugin-template",
+  "name": "plugin-opsgenie",
   "build": {
     "context": ".",
     "dockerfile": "Dockerfile"
   },
-  "workspaceFolder": "/workspaces/plugin-template",
+  "workspaceFolder": "/workspaces/plugin-opsgenie",
   "forwardPorts": [8080],
   "customizations": {
     "vscode": {
