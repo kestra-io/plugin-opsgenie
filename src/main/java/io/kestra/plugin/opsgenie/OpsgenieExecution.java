@@ -19,9 +19,8 @@ import java.util.Map;
 @Getter
 @NoArgsConstructor
 @Schema(
-    title = "Send an Opsgenie notification with the execution information.",
-    description = "The message will include a link to the execution page in the UI along with the execution ID, namespace, flow name, the start date, duration, and the final status of the execution. If failed, then the task that led to the failure is specified.\n\n" +
-        "Use this notification task only in a flow that has a [Flow trigger](https://kestra.io/docs/administrator-guide/monitoring#alerting). Don't use this notification task in `errors` tasks. Instead, for `errors` tasks, use the [OpsgenieAlert](https://kestra.io/plugins/plugin-opsgenie/io.kestra.plugin.opsgenie.opsgeniealert) task."
+    title = "Send execution alert via Opsgenie",
+    description = "Builds an Opsgenie alert from the current execution using `opsgenie-template.peb`, including link, IDs, namespace, duration, status, and failed task when applicable. Use inside flows triggered by [Flow triggers](https://kestra.io/docs/administrator-guide/monitoring#alerting); for `errors` sections use [OpsgenieAlert](https://kestra.io/plugins/plugin-opsgenie/io.kestra.plugin.opsgenie.opsgeniealert) instead."
 )
 @Plugin(
     examples = {
@@ -52,8 +51,11 @@ import java.util.Map;
                       - Error
                       - Fail
                       - Execution
-                    authorizationToken: sampleAuthorizationToken
-                    executionId: "{{trigger.executionId}}"
+                    authorizationToken: "{{ secret('OPSGENIE_GENIEKEY') }}"
+                    options:
+                      headers:
+                        X-Flow-Env: prod
+                      connectTimeout: PT5S
 
                 triggers:
                   - id: failed_prod_workflows

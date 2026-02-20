@@ -32,39 +32,46 @@ public abstract class OpsgenieTemplate extends OpsgenieAlert {
     protected Property<String> templateUri;
 
     @Schema(
-        title = "Map of variables to use for the message template"
+        title = "Template variables",
+        description = "Key/value map rendered into the Pebble template before building the alert payload."
     )
     protected Property<Map<String, Object>> templateRenderMap;
 
 
     @Schema(
-        title = "Map of variables to use for the message template"
+        title = "Alert message",
+        description = "Overrides `message` in the rendered template; supports expressions."
     )
     protected Property<String> message;
 
 
     @Schema(
-        title = "Map of variables to use for the message template"
+        title = "Alert alias",
+        description = "Optional alias override for the alert payload."
     )
     protected Property<String> alias;
 
     @Schema(
-        title = "Map of variables to use for the message template"
+        title = "Responders map",
+        description = "Map of responder id to type (`team`, `user`, `escalation`, `schedule`); converted to the Opsgenie responders list."
     )
     protected Property<Map<String, String>> responders;
 
     @Schema(
-        title = "Map of variables to use for the message template"
+        title = "Visible-to map",
+        description = "Map of entity id to type granting visibility (`team` or `user`); converted to the Opsgenie visibleTo list."
     )
     protected Property<Map<String, String>> visibleTo;
 
     @Schema(
-        title = "Map of variables to use for the message template"
+        title = "Alert tags",
+        description = "List of tags added to the alert payload."
     )
     protected Property<List<String>> tags;
 
     @Schema(
-        title = "Map of variables to use for the message template"
+        title = "Alert priority",
+        description = "Priority code such as `P1`–`P5`; overrides the template value if present."
     )
     protected Property<String> priority;
 
