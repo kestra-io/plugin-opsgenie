@@ -26,8 +26,8 @@ import java.net.URI;
 @Getter
 @NoArgsConstructor
 @Schema(
-    title = "Send an alert to Opsgenie.",
-    description = "Add this task to a list of `errors` tasks to implement custom flow-level failure notifications. Check the <a href=\"https://docs.opsgenie.com/docs/alert-api\">Opsgenie documentation</a> for more details."
+    title = "Post a custom alert to Opsgenie",
+    description = "Sends a raw alert payload to Opsgenie using the Alert API. Use in `errors` sections for flow failure notifications; pair with GenieKey auth and the `url` from [Opsgenie alert requests](https://docs.opsgenie.com/docs/alert-api)."
 )
 @Plugin(
     examples = {
@@ -66,7 +66,7 @@ import java.net.URI;
                         "tags":["ExecutionFail","Error","Execution"],
                         "priority":"P1"
                       }
-                    authorizationToken: sampleAuthorizationToken
+                    authorizationToken: "{{ secret('OPSGENIE_GENIEKEY') }}"
                 """
         ),
         @Example(
@@ -95,7 +95,11 @@ import java.net.URI;
                         "tags":["Execution"],
                         "priority":"P2"
                       }
-                    authorizationToken: sampleAuthorizationToken
+                    authorizationToken: "{{ secret('OPSGENIE_GENIEKEY') }}"
+                    options:
+                      headers:
+                        X-Custom-Source: kestra-flow
+                      connectTimeout: PT5S
                 """
         ),
     },
@@ -104,19 +108,22 @@ import java.net.URI;
 public class OpsgenieAlert extends AbstractOpsgenieConnection {
 
     @Schema(
-        title = "Alert creation URL"
+        title = "Alert request URL",
+        description = "Full Opsgenie alert endpoint (for example `https://api.opsgenie.com/v2/alerts/requests/{token}`); typically stored as a secret."
     )
     @PluginProperty(dynamic = true)
     @NotBlank
     protected String url;
 
     @Schema(
-        title = "Opsgenie alert payload"
+        title = "Alert payload",
+        description = "JSON body sent to Opsgenie; render expressions before sending. Must follow the Opsgenie Alert API schema."
     )
     protected Property<String> payload;
 
     @Schema(
-        title = "GenieKey. Authorization token from Opsgenie"
+        title = "GenieKey authorization token",
+        description = "Opsgenie GenieKey sent as `Authorization` header; prefer `{{ secret(...) }}`."
     )
     protected Property<String> authorizationToken;
 
