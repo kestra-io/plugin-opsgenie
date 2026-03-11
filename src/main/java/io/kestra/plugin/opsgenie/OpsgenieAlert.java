@@ -1,6 +1,9 @@
 package io.kestra.plugin.opsgenie;
 
+import java.net.URI;
+
 import com.google.common.net.HttpHeaders;
+
 import io.kestra.core.http.HttpRequest;
 import io.kestra.core.http.HttpResponse;
 import io.kestra.core.http.client.HttpClient;
@@ -10,6 +13,7 @@ import io.kestra.core.models.annotations.PluginProperty;
 import io.kestra.core.models.property.Property;
 import io.kestra.core.models.tasks.VoidOutput;
 import io.kestra.core.runners.RunContext;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
@@ -17,8 +21,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-
-import java.net.URI;
 
 @SuperBuilder
 @ToString
@@ -141,9 +143,11 @@ public class OpsgenieAlert extends AbstractOpsgenieConnection {
                 .uri(URI.create(url))
                 .addHeader(HttpHeaders.AUTHORIZATION, runContext.render(authorizationToken).as(String.class).orElse(null))
                 .method("POST")
-                .body(HttpRequest.StringRequestBody.builder()
-                    .content(payload)
-                    .build());
+                .body(
+                    HttpRequest.StringRequestBody.builder()
+                        .content(payload)
+                        .build()
+                );
 
             HttpRequest request = requestBuilder.build();
 
