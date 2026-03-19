@@ -47,7 +47,7 @@ public class OpsgenieAlertTest {
         OpsgenieAlert task = OpsgenieAlert.builder()
             .url(embeddedServer.getURI() + "/webhook-unit-test")
             .payload(
-                Property.ofValue(
+                Property.ofExpression(
                     Files.asCharSource(
                         new File(
                             Objects.requireNonNull(
