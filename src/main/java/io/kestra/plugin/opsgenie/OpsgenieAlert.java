@@ -113,7 +113,7 @@ public class OpsgenieAlert extends AbstractOpsgenieConnection {
         title = "Alert request URL",
         description = "Full Opsgenie alert endpoint (for example `https://api.opsgenie.com/v2/alerts/requests/{token}`); typically stored as a secret."
     )
-    @PluginProperty(dynamic = true)
+    @PluginProperty(dynamic = true, group = "main")
     @NotBlank
     protected String url;
 
@@ -121,12 +121,14 @@ public class OpsgenieAlert extends AbstractOpsgenieConnection {
         title = "Alert payload",
         description = "JSON body sent to Opsgenie; render expressions before sending. Must follow the Opsgenie Alert API schema."
     )
+    @PluginProperty(group = "main")
     protected Property<String> payload;
 
     @Schema(
         title = "GenieKey authorization token",
         description = "Opsgenie GenieKey sent as `Authorization` header; prefer `{{ secret(...) }}`."
     )
+    @PluginProperty(group = "connection")
     protected Property<String> authorizationToken;
 
     @Override

@@ -31,7 +31,7 @@ public abstract class AbstractOpsgenieConnection extends Task implements Runnabl
         title = "Tune Opsgenie HTTP client",
         description = "Optional HTTP client settings for Opsgenie calls. Connect timeout, read idle timeout, default charset, and headers are applied; other fields are currently ignored by the client builder."
     )
-    @PluginProperty(dynamic = true)
+    @PluginProperty(dynamic = true, group = "advanced")
     protected RequestOptions options;
 
     protected HttpConfiguration httpClientConfigurationWithOptions() throws IllegalVariableEvaluationException {
@@ -75,6 +75,7 @@ public abstract class AbstractOpsgenieConnection extends Task implements Runnabl
             title = "Connect timeout",
             description = "Maximum time to open the connection before failing; uses the HTTP client default when unset."
         )
+        @PluginProperty(group = "execution")
         private final Property<Duration> connectTimeout;
 
         @Schema(
@@ -82,6 +83,7 @@ public abstract class AbstractOpsgenieConnection extends Task implements Runnabl
             description = "Maximum time allowed for reading the response body; kept for compatibility, not applied to the current client builder."
         )
         @Builder.Default
+        @PluginProperty(group = "execution")
         private final Property<Duration> readTimeout = Property.ofValue(Duration.ofSeconds(10));
 
         @Schema(
@@ -89,6 +91,7 @@ public abstract class AbstractOpsgenieConnection extends Task implements Runnabl
             description = "Closes idle read connections after inactivity; defaults to PT5M."
         )
         @Builder.Default
+        @PluginProperty(group = "execution")
         private final Property<Duration> readIdleTimeout = Property.ofValue(Duration.of(5, ChronoUnit.MINUTES));
 
         @Schema(
@@ -96,6 +99,7 @@ public abstract class AbstractOpsgenieConnection extends Task implements Runnabl
             description = "Idle lifetime for pooled connections before close; currently not applied by the client builder."
         )
         @Builder.Default
+        @PluginProperty(group = "execution")
         private final Property<Duration> connectionPoolIdleTimeout = Property.ofValue(Duration.ofSeconds(0));
 
         @Schema(
@@ -103,6 +107,7 @@ public abstract class AbstractOpsgenieConnection extends Task implements Runnabl
             description = "Maximum response size in bytes; currently not applied by the client builder."
         )
         @Builder.Default
+        @PluginProperty(group = "execution")
         private final Property<Integer> maxContentLength = Property.ofValue(1024 * 1024 * 10);
 
         @Schema(
@@ -110,12 +115,14 @@ public abstract class AbstractOpsgenieConnection extends Task implements Runnabl
             description = "Charset used for request bodies; defaults to UTF-8."
         )
         @Builder.Default
+        @PluginProperty(group = "advanced")
         private final Property<Charset> defaultCharset = Property.ofValue(StandardCharsets.UTF_8);
 
         @Schema(
             title = "HTTP headers",
             description = "Additional headers rendered and added to each request."
         )
+        @PluginProperty(group = "advanced")
         public Property<Map<String, String>> headers;
     }
 }

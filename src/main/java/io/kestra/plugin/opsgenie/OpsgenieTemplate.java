@@ -19,6 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import io.kestra.core.models.annotations.PluginProperty;
 
 @SuperBuilder
 @ToString
@@ -31,48 +32,56 @@ public abstract class OpsgenieTemplate extends OpsgenieAlert {
         title = "Template to use",
         hidden = true
     )
+    @PluginProperty(group = "advanced")
     protected Property<String> templateUri;
 
     @Schema(
         title = "Template variables",
         description = "Key/value map rendered into the Pebble template before building the alert payload."
     )
+    @PluginProperty(group = "advanced")
     protected Property<Map<String, Object>> templateRenderMap;
 
     @Schema(
         title = "Alert message",
         description = "Overrides `message` in the rendered template; supports expressions."
     )
+    @PluginProperty(group = "advanced")
     protected Property<String> message;
 
     @Schema(
         title = "Alert alias",
         description = "Optional alias override for the alert payload."
     )
+    @PluginProperty(group = "advanced")
     protected Property<String> alias;
 
     @Schema(
         title = "Responders map",
         description = "Map of responder id to type (`team`, `user`, `escalation`, `schedule`); converted to the Opsgenie responders list."
     )
+    @PluginProperty(group = "advanced")
     protected Property<Map<String, String>> responders;
 
     @Schema(
         title = "Visible-to map",
         description = "Map of entity id to type granting visibility (`team` or `user`); converted to the Opsgenie visibleTo list."
     )
+    @PluginProperty(group = "destination")
     protected Property<Map<String, String>> visibleTo;
 
     @Schema(
         title = "Alert tags",
         description = "List of tags added to the alert payload."
     )
+    @PluginProperty(group = "advanced")
     protected Property<List<String>> tags;
 
     @Schema(
         title = "Alert priority",
         description = "Priority code such as `P1`–`P5`; overrides the template value if present."
     )
+    @PluginProperty(group = "advanced")
     protected Property<String> priority;
 
     @SuppressWarnings("unchecked")
