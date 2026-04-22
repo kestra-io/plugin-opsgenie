@@ -6,8 +6,8 @@
         "responders": [
     {% for responder in responders %}
             ,{
-                "id": "{{responder.key | json}}",
-                "type": "{{responder.value | json}}"
+                "id": {{ responder.key | toJson }},
+                "type": {{ responder.value | toJson }}
             }
     {% endfor %}
         ],
@@ -16,8 +16,8 @@
         "visibleTo": [
     {% for responder in visibleTo %}
         ,{
-            "id": "{{responder.key | json}}",
-            "type": "{{responder.value | json}}"
+            "id": {{ responder.key | toJson }},
+            "type": {{ responder.value | toJson }}
         }
     {% endfor %}
         ],
@@ -25,7 +25,7 @@
     {% if tags is defined %}
         "tags": [
         {% for tag in tags %}
-            {{tag | json}}
+            {{ tag | toJson }}
         {% endfor %}
         ],
     {% endif %}

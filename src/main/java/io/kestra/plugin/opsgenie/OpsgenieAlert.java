@@ -128,7 +128,7 @@ public class OpsgenieAlert extends AbstractOpsgenieConnection {
         title = "GenieKey authorization token",
         description = "Opsgenie GenieKey sent as `Authorization` header; prefer `{{ secret(...) }}`."
     )
-    @PluginProperty(group = "connection")
+    @PluginProperty(secret = true, group = "connection")
     protected Property<String> authorizationToken;
 
     @Override
