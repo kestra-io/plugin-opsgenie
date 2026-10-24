@@ -35,14 +35,23 @@
     {% if message is defined %}
         "message": "{{message}}",
     {% endif %}
-    {% if details is defined %}
+    {% if (details is defined) or (customFields is defined and customFields is not empty) %}
         "details": {
             "Namespace": "{{execution.namespace}}",
             "Flow ID": "{{execution.flowId}}",
             "Execution ID": "{{execution.id}}",
             "Execution Status": "{{execution.state.current}}",
             "Final task ID": "{{lastTask.taskId}}"
+            {% if customFields is defined and customFields is not empty %}
+                {% for entry in customFields %}
+                    , {{ entry.key | toJson }}: {{ entry.value | toJson }}
+                {% endfor %}
+            {% endif %}
         },
     {% endif %}
-    "description": "*<{{link}}|[{{execution.namespace}}] {{execution.flowId}} ➛ {{execution.state.current}} - Final task ID {{lastTask.taskId}}>*\n> {% if firstFailed == false %}Succeeded{% else %}Failed on task `{{firstFailed.taskId}}`{% endif %} after {{duration}}"
+    {% set descriptionText = "*<" ~ link ~ "|[" ~ execution.namespace ~ "] " ~ execution.flowId ~ " ➛ " ~ execution.state.current ~ " - Final task ID " ~ lastTask.taskId ~ ">*\n> " ~ (firstFailed == false ? "Succeeded" : "Failed on task `" ~ firstFailed.taskId ~ "`") ~ " after " ~ duration %}
+    {% if customMessage is defined %}
+        {% set descriptionText = descriptionText ~ "\n\n" ~ customMessage %}
+    {% endif %}
+    "description": {{ descriptionText | toJson }}
 }

@@ -28,6 +28,10 @@ tasks:
       - Fail
       - Execution
     authorizationToken: sampleAuthorizationToken
+    customMessage: "This is my custom test message"
+    customFields:
+      environment: "test"
+      team: "platform"
 
 triggers:
   - id: on_failure

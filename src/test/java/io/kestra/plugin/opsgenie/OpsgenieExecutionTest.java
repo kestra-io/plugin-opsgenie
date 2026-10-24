@@ -45,5 +45,11 @@ public class OpsgenieExecutionTest extends AbstractOpsgenieTest {
         assertThat(receivedData, containsString("Failed on task `failed`"));
         assertThat(receivedData, containsString("Final task ID failed"));
         assertThat(receivedData, containsString("Kestra Opsgenie alert"));
+        assertThat(receivedData, containsString("This is my custom test message"));
+        assertThat(receivedData, containsString("environment"));
+        assertThat(receivedData, containsString("test"));
+        assertThat(receivedData, containsString("team"));
+        assertThat(receivedData, containsString("platform"));
+
     }
 }
