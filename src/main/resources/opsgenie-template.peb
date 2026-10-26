@@ -44,14 +44,10 @@
             "Final task ID": "{{lastTask.taskId}}"
             {% if customFields is defined and customFields is not empty %}
                 {% for entry in customFields %}
-                    , {{ entry.key | toJson }}: {{ entry.value | toJson }}
+                    , {{ entry.key | toJson }}: {{ (entry.value ~ "") | toJson }}
                 {% endfor %}
             {% endif %}
         },
     {% endif %}
-    {% set descriptionText = "*<" ~ link ~ "|[" ~ execution.namespace ~ "] " ~ execution.flowId ~ " ➛ " ~ execution.state.current ~ " - Final task ID " ~ lastTask.taskId ~ ">*\n> " ~ (firstFailed == false ? "Succeeded" : "Failed on task `" ~ firstFailed.taskId ~ "`") ~ " after " ~ duration %}
-    {% if customMessage is defined %}
-        {% set descriptionText = descriptionText ~ "\n\n" ~ customMessage %}
-    {% endif %}
-    "description": {{ descriptionText | toJson }}
+    "description": "*<{{link}}|[{{execution.namespace}}] {{execution.flowId}} ➛ {{execution.state.current}} - Final task ID {{lastTask.taskId}}>*\n> {% if firstFailed == false %}Succeeded{% else %}Failed on task `{{firstFailed.taskId}}`{% endif %} after {{duration}}{% if customMessage is defined and customMessage is not empty %}{% set jsonMessage = customMessage | toJson %}\n\n{{ jsonMessage | slice(1, (jsonMessage | length) - 1) }}{% endif %}"
 }

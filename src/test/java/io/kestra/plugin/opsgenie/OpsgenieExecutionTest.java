@@ -15,6 +15,7 @@ import jakarta.inject.Inject;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 
 @KestraTest
 public class OpsgenieExecutionTest extends AbstractOpsgenieTest {
@@ -46,10 +47,32 @@ public class OpsgenieExecutionTest extends AbstractOpsgenieTest {
         assertThat(receivedData, containsString("Final task ID failed"));
         assertThat(receivedData, containsString("Kestra Opsgenie alert"));
         assertThat(receivedData, containsString("This is my custom test message"));
-        assertThat(receivedData, containsString("environment"));
-        assertThat(receivedData, containsString("test"));
-        assertThat(receivedData, containsString("team"));
-        assertThat(receivedData, containsString("platform"));
+        assertThat(receivedData, containsString("\"environment\":\"test\""));
+        assertThat(receivedData, containsString("\"team\":\"platform\""));
+        assertThat(receivedData, containsString("\\n\\nThis is my custom test message"));
+        assertThat(receivedData, not(containsString("\\\\n")));
+        assertThat(receivedData, containsString("\"retries\":\"3\""));
+        assertThat(receivedData, containsString("\"urgent\":\"true\""));
+    }
 
+    @Test
+    void shouldKeepDefaultPayloadWhenNoCustomMessageOrFields() throws Exception {
+        FakeWebhookController.data = null;
+
+        var failedExecution = runAndCaptureExecution(
+            "main-flow-that-fails-default",
+            "opsgenie-default"
+        );
+
+        String receivedData = waitForWebhookData(() -> FakeWebhookController.data, 5000);
+
+        assertThat(receivedData, containsString(failedExecution.getId()));
+        assertThat(receivedData, containsString("Final task ID failed"));
+        assertThat(receivedData, containsString("\\n> Failed on task `failed`"));
+        assertThat(receivedData, not(containsString("\\\\n")));
+        assertThat(receivedData, not(containsString("\\n\\n")));
+        assertThat(receivedData, not(containsString("\"details\"")));
+        assertThat(receivedData, not(containsString("\"environment\"")));
+        assertThat(receivedData, not(containsString("\"team\":\"platform\"")));
     }
 }

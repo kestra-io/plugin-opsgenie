@@ -32,6 +32,8 @@ tasks:
     customFields:
       environment: "test"
       team: "platform"
+      retries: 3
+      urgent: true
 
 triggers:
   - id: on_failure
